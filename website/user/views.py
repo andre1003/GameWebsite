@@ -83,7 +83,14 @@ class LoginByTokenView(View):
     def get(self, request, token, *args, **kwargs):
         player = Player.objects.get(auth_token=token)
         login(request, player.user)
-        return HttpResponse(200)
+
+        data = {
+            'username': player.user.username,
+            'age': player.age,
+            'auth_token': player.auth_token
+        }
+
+        return JsonResponse(data)
 
 
 class GetDataView(LoginRequiredMixin, View):
