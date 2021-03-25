@@ -3,3 +3,5 @@ website/user/__pycache__/
 website/user/migrations/__pycache__/
 website/website/__pycache__/
 DataBaseConnection/__pycache__/
+website/db.sqlite3
+DataBaseConnection/data.txt
