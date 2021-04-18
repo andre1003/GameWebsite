@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Dados do Usuário</title>
+
+    
 </head>
 <body>
     <h1>Dados do Usuário</h1>
@@ -36,7 +38,30 @@
             {{ user_form.email.errors }}
         </div>
         <br>
-        <input type="submit" value="Salvar">
+        <div>
+            <input type="checkbox" name="password" id="controller" onchange="checkboxController();"> <label for="password">Alterar senha</label>
+        </div>
+        <div hidden id="change-password">
+            <div>
+                <label for="{{ user_form.password1.id_for_label }}">Nova senha:</label>
+                {{ user_form.password1 }}
+                {{ user_form.password1.errors }}
+            </div>
+        </div>
+        <br>
+        <input type="submit" id="save" value="Salvar">
     </form>
 </body>
+<script>
+    function checkboxController(){
+        var controller = document.getElementById('controller');
+        var changePassword = document.getElementById('change-password');
+        if(controller.checked){
+            changePassword.hidden = false;
+        }
+        else {
+            changePassword.hidden = true;
+        }
+    }
+</script>
 </html>

@@ -162,7 +162,11 @@ class EditDataView(LoginRequiredMixin, View): # PRECISA REALIZAR O POST E REVISA
             user.email = user_form['email'].value() 
             update_list.append('email')
 
+        
         user.save(update_fields=update_list)
+        if user_form['password1'].value():
+            user.set_password(user_form['password1'].value())
+            user.save()
         return redirect('home')
 
 
