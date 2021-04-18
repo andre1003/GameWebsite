@@ -1,3 +1,35 @@
-{% for match in matchs %}
-    {{ match.hits }}<br>
-{% endfor %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Teste</title>
+
+    <script>
+        function add(type) {
+            let count = 0;
+            for(i = 0; i < document.getElementsByClassName(type).length; i++) {
+                count += parseInt(document.getElementsByClassName(type)[i].innerHTML);        
+            }
+
+            return count;
+        }
+    </script>
+</head>
+<body>
+    {% for match in matchs %}
+        <p class="hits" hidden>{{ match.hits }}</p>
+    {% endfor %}
+    <p id="total-hits"></p>
+    {% for match in matchs %}
+        <p class="mistakes" hidden>{{ match.mistakes }}</p>
+    {% endfor %}
+    <p id="total-mistakes"></p>
+</body>
+
+<script>
+    document.getElementById('total-hits').innerHTML = "Total de Acertos: " + add('hits');
+    document.getElementById('total-mistakes').innerHTML = "Total de Erros: " + add('mistakes');
+
+</script>
+</html>
+

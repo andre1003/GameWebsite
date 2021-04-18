@@ -98,9 +98,18 @@ class GetDataView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         user = request.user
 
+        matchs = Match.objects.filter(player=user.player)
+        hits = 0
+        mistakes = 0
+
+        for match in matchs:
+            hits += match.hits
+            mistakes += match.mistakes
+
         data = {
             'username': user.username,
-            'age': user.player.age,
+            'hits': hits,
+            'mistakes': mistakes,
             'auth_token': user.player.auth_token
         }
 
@@ -164,4 +173,11 @@ class Test(View):
         user = request.user
 
         matchs = Match.objects.filter(player=user.player)
-        return render(request, self.template_name, {'matchs': matchs})
+        hits = 0
+        mistakes = 0
+
+        for match in matchs:
+            hits += match.hits
+            mistakes += match.mistakes
+
+        return render(request, self.template_name, {'matchs': matchs, 'hits': hits, 'mistakes': mistakes})
