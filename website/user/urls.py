@@ -8,4 +8,6 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('login/<str:token>/', LoginByTokenView.as_view(), name="login_by_token"),
     path('data/', GetDataView.as_view(), name='data'),
+    path('data/edit/', EditDataView.as_view(), name="edit_data"),
+    path('test/', Test.as_view(), name="test")
 ]

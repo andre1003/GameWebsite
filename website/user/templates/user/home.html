@@ -6,7 +6,22 @@
     </head>
 
     <body>
-        <h1>Home</h1>
-        <p>Essa página é a home.</p>
+        <h1>Página Principal</h1>
+
+        <p>Essa é a página principal do site referente ao jogo educativo para ensino de metodologias ágeis.</p>
+        <p>O protótipo desse jogo está sendo desenvolvido para apoiar o ensino das metodologias ágeis Scrum
+        e EXtreme Programming... (Adicionar mais descrição)</p>
+        <br>
+        <h3>Baixe o jogo agora mesmo!</h3>
+        <p>Clique no botão abaixo para fazer o download o jogo.</p>
+        <button>Baixar Jogo</button>
+
+        <p>Para jogar é necessário ter uma conta, que pode ser criada na <a href="{% url 'singup' %}">página de cadastramento</a>.</p>
+        <p>Caso já possua e deseje alterar seus dados pessoais, faça seu login na <a href="{% url 'login' %}">página de autenticação</a>.</p>
+    
+        {% if user.is_authenticated %}
+        <p>Deseja alterar seus dados? <a href="{% url 'edit_data' %}">Acesse aqui</a>.</p>
+        <a href="{% url 'logout' %}">Sair</a>
+        {% endif %}
     </body>
 </html>

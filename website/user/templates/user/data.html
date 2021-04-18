@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dados Pessoais</title>
+</head>
+<body>
+    <h1>Editar Dados Pessoais</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        <!--{% csrf_token %}
+
+        {{ user_form.as_p }}
+        {{ player_form.age }}-->
+        {% csrf_token %}
+        <div>
+            <label for="{{ user_form.username.id_for_label }}">Nome de usuário:</label>
+            {{ user_form.username }}
+        </div>
+        <br>
+        <div>
+            <label for="{{ user_form.first_name.id_for_label }}">Nome:</label>
+            {{ user_form.first_name }}
+            {{ user_form.first_name.errors }}
+        </div>
+        <br>
+        <div>
+            <label for="{{ user_form.last_name.id_for_label }}">Sobrenome:</label>
+            {{ user_form.last_name }}
+            {{ user_form.last_name.errors }}
+        </div>
+        <br>
+        <div>
+            <label for="{{ user_form.email.id_for_label }}">E-mail:</label>
+            {{ user_form.email }}
+            {{ user_form.email.errors }}
+        </div>
+        <br>
+        <input type="submit" value="Salvar">
+    </form>
+</body>
+</html>

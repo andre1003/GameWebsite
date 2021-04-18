@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import *
+from .models import *
 
 
 # Views
@@ -104,3 +105,63 @@ class GetDataView(LoginRequiredMixin, View):
         }
 
         return JsonResponse(data)
+
+
+class EditDataView(LoginRequiredMixin, View): # PRECISA REALIZAR O POST E REVISAR
+    template_name = 'user/data.html'
+    form_class = UserRegisterForm
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+
+        data = {
+            'username': user.username,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email': user.email, 
+            'password1': user.password,
+            'password2': user.password
+        }
+
+        forms = {
+            'user_form': self.form_class(data, auto_id=False),
+            'user': user
+        }
+
+        return render(request, self.template_name, forms)
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+
+        user_form = self.form_class(request.POST)
+
+        update_list = list()
+
+        if user_form['username'].value() != user.username:
+            user.username = user_form['username'].value() 
+            update_list.append('username')
+
+        if user_form['first_name'].value()  != user.first_name:
+            user.first_name = user_form['first_name'].value() 
+            update_list.append('first_name')
+
+        if user_form['last_name'].value()  != user.last_name:
+            user.last_name = user_form['last_name'].value() 
+            update_list.append('last_name')
+        
+        if user_form['email'].value()  != user.email:
+            user.email = user_form['email'].value() 
+            update_list.append('email')
+
+        user.save(update_fields=update_list)
+        return redirect('home')
+
+
+class Test(View):
+    template_name = 'user/test.html'
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+
+        matchs = Match.objects.filter(player=user.player)
+        return render(request, self.template_name, {'matchs': matchs})

@@ -5,17 +5,32 @@
     <title>Login</title>
 </head>
 <body>
-    <h1>Login</h1>
+    <h1>Autenticação</h1>
+    {% if user.is_authenticated %}
+    <p>Você já está logado!</p>
+    <a href="{% url 'logout' %}">Sair</a>
+    {% else %}
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-
-        {{ form.as_p }}
 
         {% if request.GET.next %}
             <input type="hidden" name="next" value="{{ request.GET.next }}">
         {% endif %}
 
+        <div>
+            <label for="{{ form.username.id_for_label }}">Nome de usuário:</label>
+            {{ form.username }}
+            {{ form.username.errors }}
+        </div>
+        <br>
+        <div>
+            <label for="{{ form.password.id_for_label }}">Senha:</label>
+            {{ form.password }}
+            {{ form.password.errors }}
+        </div>
+        <br>
         <input type="submit" value="Logar">
     </form>
+    {% endif %}
 </body>
 </html>

@@ -3,6 +3,7 @@ import requests
 
 login_url = "http://127.0.0.1:8000/login/"
 data_url = "http://127.0.0.1:8000/data/"
+logout_url = "http://127.0.0.1:8000/logout/"
 
 client = requests.session()
 
@@ -15,11 +16,13 @@ else:
     # older versions
     csrftoken = client.cookies['csrf']
 
-data = dict(username="andre.aragao", password="Dufwine#1003", csrfmiddlewaretoken=csrftoken, next='/')
+data = dict(username=str(sys.argv[1]), password=sys.argv[2], csrfmiddlewaretoken=csrftoken, next='/')
 r = client.post(login_url, data=data, headers=dict(Referer=login_url))
 
 r = client.get(data_url)
 
-file = open("data.txt", "w")
+file = open("Data/data.txt", "w")
 file.write(r.json()['auth_token'])
 file.close()
+
+r = client.get(logout_url)

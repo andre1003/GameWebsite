@@ -2,17 +2,58 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Registrar</title>
+    <title>Cadastramento</title>
 </head>
 <body>
-    <h1>Registrar</h1>
+    <h1>Cadastramento</h1>
 
     <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
+        <!--{% csrf_token %}
 
         {{ user_form.as_p }}
-        {{ player_form.age }}
-
+        {{ player_form.age }}-->
+        <div>
+            <label for="{{ user_form.username.id_for_label }}">Nome de usuário:</label>
+            {{ user_form.username }}
+            {{ user_form.username.errors }}
+        </div>
+        <br>
+        <div>
+            <label for="{{ user_form.first_name.id_for_label }}">Nome:</label>
+            {{ user_form.first_name }}
+            {{ user_form.first_name.errors }}
+        </div>
+        <br>
+        <div>
+            <label for="{{ user_form.last_name.id_for_label }}">Sobrenome:</label>
+            {{ user_form.last_name }}
+            {{ user_form.last_name.errors }}
+        </div>
+        <br>
+        <div>
+            <label for="{{ user_form.email.id_for_label }}">E-mail:</label>
+            {{ user_form.email }}
+            {{ user_form.email.errors }}
+        </div>
+        <br>
+        <div>
+            <label for="{{ user_form.password1.id_for_label }}">Senha:</label>
+            {{ user_form.password1 }}
+            {{ user_form.password1.errors }}
+        </div>
+        <br>
+        <div>
+            <label for="{{ user_form.password2.id_for_label }}">Confirmação de senha:</label>
+            {{ user_form.password2 }}
+            {{ user_form.password2.errors }}
+        </div>
+        <br>
+        <div>
+            <label for="{{ player_form.age.id_for_label }}">Idade:</label>
+            {{ player_form.age }}
+            {{ player_form.age.errors }}
+        </div>
+        <br>
         <input type="submit" value="Registrar">
     </form>
 </body>
