@@ -10,14 +10,21 @@
 
         <p>Essa é a página principal do site referente ao jogo educativo para ensino de metodologias ágeis.</p>
         <p>O protótipo desse jogo está sendo desenvolvido para apoiar o ensino das metodologias ágeis Scrum
-        e EXtreme Programming... (Adicionar mais descrição)</p>
-        <br>
-        <h3>Baixe o jogo agora mesmo!</h3>
-        <p>Clique no botão abaixo para fazer o download o jogo.</p>
+        e EXtreme Programming, as quais são as mais utilizadas atualmente. Para isso, está sendo utilizado o 
+        software Unity, em conjunto com a linguagem de programação C# para a produção do jogo. Este jogo busca 
+        corrigir carências encontradas em soluções anteriores, sendo o único, dentre todos os jogos encontrados 
+        pelos autores, do estilo multijogador.</p>
+        
+        <h3>Como Jogar?</h3>
+        
+        <p>Para que você possa jogar o jogo educativo para ensino de metodologias ágeis, é necessário realizar duas etapas:</p>
+        
+        <p><b>1) Criar uma conta</b>. Caso você ainda não tenha uma conta, basta acessar a <a href="{% url 'singup' %}">página de cadastramento</a>.</p>
+        
+        <p><b>2) Baixar o Jogo</b>. Basta clicar no botão abaixo para fazer o download do jogo.</p>
         <button>Baixar Jogo</button>
-
-        <p>Para jogar é necessário ter uma conta, que pode ser criada na <a href="{% url 'singup' %}">página de cadastramento</a>.</p>
-        <p>Caso já possua e deseje alterar seus dados pessoais, faça seu login na <a href="{% url 'login' %}">página de autenticação</a>.</p>
+        
+        <p>Caso já possua uma conta e deseja alterar seus dados pessoais, faça seu login na <a href="{% url 'login' %}">página de autenticação</a>.</p>
     
         {% if user.is_authenticated %}
         <p>Deseja alterar seus dados? <a href="{% url 'edit_data' %}">Acesse aqui</a>.</p>

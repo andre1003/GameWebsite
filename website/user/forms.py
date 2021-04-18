@@ -19,10 +19,10 @@ class PlayerRegisterForm(forms.ModelForm):
     class Meta:
         model = Player
         fields = ['age']
-        widgets = {
-            'age': TextInput(
-                attrs={
-                    'placeholder': 'Insira sua idade'
-                }
-            )
-        }
+        # widgets = {
+        #     'age': TextInput(
+        #         attrs={
+        #             'placeholder': 'Insira sua idade'
+        #         }
+        #     )
+        # }
