@@ -26,6 +26,7 @@ class Player(models.Model):
 
 # Todas as escolhas de uma única partida
 class Match(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
     match_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     role = models.CharField(max_length=20)
     hits = models.PositiveIntegerField()

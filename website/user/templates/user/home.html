@@ -8,6 +8,12 @@
     <body>
         <h1>Página Principal</h1>
 
+        {% if messages %}
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+        {% endif %}
+
         <p>Essa é a página principal do site referente ao jogo educativo para ensino de metodologias ágeis.</p>
         <p>O protótipo desse jogo está sendo desenvolvido para apoiar o ensino das metodologias ágeis Scrum
         e EXtreme Programming, as quais são as mais utilizadas atualmente. Para isso, está sendo utilizado o 
@@ -29,6 +35,10 @@
         {% if user.is_authenticated %}
         <p>Deseja alterar seus dados? <a href="{% url 'edit_data' %}">Acesse aqui</a>.</p>
         <a href="{% url 'logout' %}">Sair</a>
+
+        {% if user.is_staff %}
+        <p>Procure por um feedback individual <a href="{% url 'search' %}">aqui</a>.</p>
+        {% endif %}
         {% endif %}
     </body>
 </html>

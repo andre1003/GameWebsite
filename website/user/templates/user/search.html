@@ -16,14 +16,29 @@
     </script>
 </head>
 <body>
-    {% for match in matchs %}
+    <!--{% for match in matchs %}
         <p class="hits" hidden>{{ match.hits }}</p>
     {% endfor %}
     <p id="total-hits"></p>
     {% for match in matchs %}
         <p class="mistakes" hidden>{{ match.mistakes }}</p>
     {% endfor %}
-    <p id="total-mistakes"></p>
+    <p id="total-mistakes"></p>-->
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label>Qual aluno deseja procurar: </label><input type="text" name="search">
+        <input type="submit" value="Buscar">
+    </form>
+
+    {% if messages %}
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+    {% endif %}
+
+    {% for user in users %}
+        <p>{{ user.first_name }} - <a href="{% url 'feedback' user.username %}">Acessar Feedback</a></p>
+    {% endfor %}
 </body>
 
 <script>

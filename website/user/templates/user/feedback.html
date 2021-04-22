@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Feedbacks</title>
+</head>
+<body>
+    {% for feedback in feedbacks %}
+        <p>{{ feedback|linebreaks }}
+        --------------------------------</p>
+        
+    {% endfor %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="submit" value="Voltar">
+    </form>
+</body>
+</html>
+

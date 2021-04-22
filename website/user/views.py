@@ -170,18 +170,62 @@ class EditDataView(LoginRequiredMixin, View): # PRECISA REALIZAR O POST E REVISA
         return redirect('home')
 
 
-class Test(View):
-    template_name = 'user/test.html'
+class Search(LoginRequiredMixin, View):
+    template_name = 'user/search.html'
 
     def get(self, request, *args, **kwargs):
         user = request.user
 
-        matchs = Match.objects.filter(player=user.player)
-        hits = 0
-        mistakes = 0
+        if user.is_staff:
+            return render(request, self.template_name, {'player': None})
+        else:
+            messages.error(request, f"Você não tem permissão para acessar essa página!")
+            return redirect('home')
+        # matchs = Match.objects.filter(player=user.player)
+        # hits = 0
+        # mistakes = 0
 
-        for match in matchs:
-            hits += match.hits
-            mistakes += match.mistakes
+        # for match in matchs:
+        #     hits += match.hits
+        #     mistakes += match.mistakes
 
-        return render(request, self.template_name, {'matchs': matchs, 'hits': hits, 'mistakes': mistakes})
+        # return render(request, self.template_name, {'matchs': matchs, 'hits': hits, 'mistakes': mistakes})
+    
+    def post(self, request, *args, **kwargs):
+        name = request.POST['search']
+        users = User.objects.filter(first_name__icontains=name)
+
+        if not users:
+            messages.error(request, f"Nenhum aluno encontrado!")
+
+        return render(request, self.template_name, {'users': users})
+
+
+class Feedback(LoginRequiredMixin, View):
+    template_name = 'user/feedback.html'
+
+    def get(self, request, username, *args, **kwargs):
+        if request.user.is_staff:
+            user = User.objects.get(username=username)
+
+            matchs = Match.objects.filter(player=user.player)
+
+            feedbacks = list()
+            
+            for match in matchs:
+                month = str(match.created_at.month).zfill(2)
+                day = str(match.created_at.day).zfill(2)
+                date = f"{day}/{month}/{match.created_at.year}"
+
+                feedbacks.append(f"Data: {date}\n\nFeedback: {match.individual_feedback}\n\nAcertos: {match.hits}\nErros: {match.mistakes}")
+
+            return render(request, self.template_name, {'feedbacks': feedbacks})
+
+        else:
+            messages.error(request, f"Você não tem permissão para acessar essa página!")
+            return redirect('home')
+
+    def post(self, request, *args, **kwargs):
+        return redirect('search')
+
+        
