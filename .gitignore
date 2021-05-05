@@ -7,6 +7,8 @@ DataBaseConnection/__pycache__/
 website/db.sqlite3
 DataBaseConnection/data.txt
 DataBaseConnection/build/
+DataBaseConnection/dist/
 website/user/migrations/
 **/.vscode/
 **/*.txt
+**/*.spec
