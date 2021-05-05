@@ -71,7 +71,7 @@ class LoginView(View):
                 return redirect('home')
 
         else:
-            return HttpResponse(500)
+            return HttpResponse('500', status=500)
 
 
 class LogoutView(View):

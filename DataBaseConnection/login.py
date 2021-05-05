@@ -19,10 +19,14 @@ else:
 data = dict(username=str(sys.argv[1]), password=sys.argv[2], csrfmiddlewaretoken=csrftoken, next='/')
 r = client.post(login_url, data=data, headers=dict(Referer=login_url))
 
-r = client.get(data_url)
+file = open("score.txt", "w")
+if r.status_code == 200:
+    r = client.get(data_url)
+    string = '{\"hits\": ' + str(r.json()['hits']) + ', \"mistakes\": ' + str(r.json()['mistakes']) + '}'
+    r = client.get(logout_url)
 
-file = open("Data/data.txt", "w")
-file.write(r.json()['auth_token'])
+else:
+    string = 'Credenciais incorretas'
+
+file.write(string)
 file.close()
-
-r = client.get(logout_url)

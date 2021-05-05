@@ -8,3 +8,5 @@ website/db.sqlite3
 DataBaseConnection/data.txt
 DataBaseConnection/build/
 website/user/migrations/
+**/.vscode/
+**/*.txt
