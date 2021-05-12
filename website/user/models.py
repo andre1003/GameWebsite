@@ -47,3 +47,10 @@ class Decision(models.Model):
 
     def __str__(self):
         return self.decision
+
+
+class MyOwnTestModel(models.Model):
+    name = models.CharField(max_length=150, null=True)
+
+    def __str__(self):
+        return self.name

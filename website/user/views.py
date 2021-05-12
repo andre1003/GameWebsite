@@ -227,5 +227,23 @@ class Feedback(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         return redirect('search')
-
         
+
+class Test(LoginRequiredMixin, View):
+    form_class = (MatchRegisterForm, DecisionRegisterForm)
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+
+        match_form = self.form_class[0](request.POST)
+        decision_form = self.form_class[1](request.POST)
+
+        if match_form.is_valid():
+            match_form.instance.player = user.player
+            match_form.save()
+
+            if decision_form.is_valid():
+                decision_form.instance.choice = Match.objects.last()
+                decision_form.save()
+        
+        return redirect('home')

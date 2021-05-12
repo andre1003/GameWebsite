@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import TextInput, PasswordInput
-from .models import Player
+from .models import Decision, Match, Player, MyOwnTestModel
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
@@ -26,3 +26,21 @@ class PlayerRegisterForm(forms.ModelForm):
         #         }
         #     )
         # }
+
+
+class MatchRegisterForm(forms.ModelForm):
+    class Meta:
+        model = Match
+        fields = ['role', 'hits', 'mistakes', 'individual_feedback']
+
+
+class DecisionRegisterForm(forms.ModelForm):
+    class Meta:
+        model = Decision
+        fields = ['decision', 'concept', 'is_mistake']
+
+
+class TestForm(forms.ModelForm):
+    class Meta:
+        model = MyOwnTestModel
+        fields = ['name']
