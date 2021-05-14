@@ -170,7 +170,7 @@ class EditDataView(LoginRequiredMixin, View): # PRECISA REALIZAR O POST E REVISA
         return redirect('home')
 
 
-class Search(LoginRequiredMixin, View):
+class SearchView(LoginRequiredMixin, View):
     template_name = 'user/search.html'
 
     def get(self, request, *args, **kwargs):
@@ -201,7 +201,7 @@ class Search(LoginRequiredMixin, View):
         return render(request, self.template_name, {'users': users})
 
 
-class Feedback(LoginRequiredMixin, View):
+class FeedbackView(LoginRequiredMixin, View):
     template_name = 'user/feedback.html'
 
     def get(self, request, username, *args, **kwargs):
@@ -229,21 +229,42 @@ class Feedback(LoginRequiredMixin, View):
         return redirect('search')
         
 
-class Test(LoginRequiredMixin, View):
-    form_class = (MatchRegisterForm, DecisionRegisterForm)
+class MatchRegisterView(LoginRequiredMixin, View):
+    form_class = MatchRegisterForm
 
     def post(self, request, *args, **kwargs):
         user = request.user
 
-        match_form = self.form_class[0](request.POST)
-        decision_form = self.form_class[1](request.POST)
+        match_form = self.form_class(request.POST)
 
         if match_form.is_valid():
             match_form.instance.player = user.player
-            match_form.save()
+            match = match_form.save()
+            
+            """
+            The following code just get the matche saved and returns the match_id in
+            a JSON response. This is important for saving multiple decisions,
+            following the order:
 
-            if decision_form.is_valid():
-                decision_form.instance.choice = Match.objects.last()
-                decision_form.save()
-        
-        return redirect('home')
+            Save a match (it returns match_id) > Save n decisions, with the match_id
+            """
+            data = {
+                'match_id': match.match_id
+            }
+
+            return JsonResponse(data)
+
+
+class DecisionRegisterView(LoginRequiredMixin, View):
+    form_class = DecisionRegisterForm
+
+    def post(self, request, match_id, *args, **kwargs):
+        decision_form = self.form_class(request.POST)
+
+        if decision_form.is_valid():
+            match = Match.objects.get(match_id=match_id)
+
+            decision_form.instance.choice = match
+            decision_form.save()
+
+        return HttpResponse("Done")

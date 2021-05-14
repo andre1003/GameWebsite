@@ -2,58 +2,54 @@ import sys
 import os
 import requests
 
+def set_csrftoken(client):
+    client.get(login_url)  # sets cookie
+    if 'csrftoken' in client.cookies:
+        # Django 1.6 and up
+        return client.cookies['csrftoken']
+    else:
+        # older versions
+        return client.cookies['csrf']
+
 
 login_url = "http://127.0.0.1:8000/login/"
-test_url = "http://127.0.0.1:8000/teste/"
+match_url = "http://127.0.0.1:8000/match-register/"
+decision_url = "http://127.0.0.1:8000/decision-register/"
 
 client = requests.session()
 
-# Retrieve the CSRF token first
-client.get(login_url)  # sets cookie
-if 'csrftoken' in client.cookies:
-    # Django 1.6 and up
-    csrftoken = client.cookies['csrftoken']
-else:
-    # older versions
-    csrftoken = client.cookies['csrf']
+csrftoken = set_csrftoken(client)
 
 data = dict(username="andre.aragao", password="Dufwine#1003", csrfmiddlewaretoken=csrftoken, next='/')
 r = client.post(login_url, data=data, headers=dict(Referer=login_url))
 
-client.get(login_url)  # sets cookie
-if 'csrftoken' in client.cookies:
-    # Django 1.6 and up
-    csrftoken = client.cookies['csrftoken']
-else:
-    # older versions
-    csrftoken = client.cookies['csrf']
+# I need to reset csrftoken because login redirects to home, ant csrftoken is cleared
+csrftoken = set_csrftoken(client)
 
 data = dict(
     role="Scrum Master",
     hits=10,
     mistakes=4,
     individual_feedback="Errou demais",
+    csrfmiddlewaretoken=csrftoken,
+    next='/')
+
+r = client.post(match_url, data=data, headers=dict(Referer=match_url))
+
+print(f'{r.status_code}')
+
+match_id = r.json()['match_id']
+
+decision_url += match_id + "/"
+
+data = dict(
     decision="Daily Scrum",
     concept="Reunião de Equipe",
     is_mistake=False,
     csrfmiddlewaretoken=csrftoken,
-    next='/')
+    next='/'
+)
 
-r = client.post(test_url, data=data, headers=dict(Referer=test_url))
+r = client.post(decision_url, data=data, headers=dict(Referer=decision_url))
 
-print(f'{r.status_code}')
-# path = os.getcwd()
-# os.chdir('Assets/Data/')
-# path = os.getcwd()
-
-# file = open("score.txt", "w")  
-# if r.status_code == 200:
-#     r = client.get(data_url)
-#     string = '{\"hits\": ' + str(r.json()['hits']) + ', \"mistakes\": ' + str(r.json()['mistakes']) + '}'
-#     r = client.get(logout_url)
-
-# else:
-#     string = 'Credenciais incorretas'
-
-# file.write(string)
-# file.close()
+print(r.status_code)
