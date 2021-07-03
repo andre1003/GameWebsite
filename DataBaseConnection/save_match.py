@@ -12,6 +12,13 @@ def set_csrftoken(client):
         return client.cookies['csrf']
 
 
+def save(client, data, url):
+    r = client.post(url, data=data, headers=dict(Referer=url))
+
+    print(r.status_code)
+
+
+
 login_url = "http://127.0.0.1:8000/login/"
 match_url = "http://127.0.0.1:8000/match-register/"
 decision_url = "http://127.0.0.1:8000/decision-register/"
@@ -30,7 +37,7 @@ data = dict(
     role="Scrum Master",
     hits=10,
     mistakes=4,
-    individual_feedback="Errou demais",
+    individual_feedback="Poucos erros.",
     csrfmiddlewaretoken=csrftoken,
     next='/')
 
@@ -42,14 +49,25 @@ match_id = r.json()['match_id']
 
 decision_url += match_id + "/"
 
+
+########### Save decision
+
 data = dict(
     decision="Daily Scrum",
-    concept="Reunião de Equipe",
+    scenery="Reunião de Equipe",
     is_mistake=False,
     csrfmiddlewaretoken=csrftoken,
     next='/'
 )
 
-r = client.post(decision_url, data=data, headers=dict(Referer=decision_url))
+save(client, data, decision_url)
 
-print(r.status_code)
+data = dict(
+    decision="Sprint Retrospective",
+    scenery="Reunião de Equipe",
+    is_mistake=True,
+    csrfmiddlewaretoken=csrftoken,
+    next='/'
+)
+
+save(client, data, decision_url)

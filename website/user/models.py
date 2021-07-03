@@ -41,9 +41,9 @@ class Match(models.Model):
 # Uma decisão
 class Decision(models.Model):
     decision = models.CharField(max_length=250)
-    concept = models.CharField(max_length=150)
+    scenery = models.CharField(max_length=150)
     is_mistake = models.BooleanField()
-    choice = models.ForeignKey(Match, on_delete=models.PROTECT)
+    match = models.ForeignKey(Match, on_delete=models.PROTECT)
 
     def __str__(self):
         return self.decision

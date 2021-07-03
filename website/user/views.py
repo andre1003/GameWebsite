@@ -264,7 +264,7 @@ class DecisionRegisterView(LoginRequiredMixin, View):
         if decision_form.is_valid():
             match = Match.objects.get(match_id=match_id)
 
-            decision_form.instance.choice = match
+            decision_form.instance.match = match
             decision_form.save()
 
         return HttpResponse("Done")

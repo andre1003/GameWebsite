@@ -37,7 +37,7 @@ class MatchRegisterForm(forms.ModelForm):
 class DecisionRegisterForm(forms.ModelForm):
     class Meta:
         model = Decision
-        fields = ['decision', 'concept', 'is_mistake']
+        fields = ['decision', 'scenery', 'is_mistake']
 
 
 class TestForm(forms.ModelForm):
