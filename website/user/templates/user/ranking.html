@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Ranking</title>
+    </head>
+
+    <body>
+        <h1>Ranking</h1>
+
+        {% for group in ranking %}
+            <p>{{ group.position }}º - {{ group.name }}: {{ group.score }} pontos</p>
+        {% endfor %}
+    </body>
+</html>

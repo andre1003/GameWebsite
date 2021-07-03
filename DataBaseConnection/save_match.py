@@ -35,9 +35,10 @@ csrftoken = set_csrftoken(client)
 
 data = dict(
     role="Scrum Master",
-    hits=10,
+    hits=6,
     mistakes=4,
     individual_feedback="Poucos erros.",
+    group="Firma",
     csrfmiddlewaretoken=csrftoken,
     next='/')
 

@@ -5,6 +5,7 @@ from django.views import View
 from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.functions import Coalesce
 from .forms import *
 from .models import *
 
@@ -231,6 +232,10 @@ class FeedbackView(LoginRequiredMixin, View):
 
 class MatchRegisterView(LoginRequiredMixin, View):
     form_class = MatchRegisterForm
+    template_name = 'user/tests.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, {'form': self.form_class})
 
     def post(self, request, *args, **kwargs):
         user = request.user
@@ -239,10 +244,19 @@ class MatchRegisterView(LoginRequiredMixin, View):
 
         if match_form.is_valid():
             match_form.instance.player = user.player
+
+            group = Group.objects.get(name=match_form['group'].value())
+            match_form.instance.group = group
+            
+            print(f'\n\n{group.name} - Score: {group.score}')
+
             match = match_form.save()
             
+            group.score += match.hits
+            group.save()
+
             """
-            The following code just get the matche saved and returns the match_id in
+            The following code just get the match saved and returns the match_id in
             a JSON response. This is important for saving multiple decisions,
             following the order:
 
@@ -268,3 +282,19 @@ class DecisionRegisterView(LoginRequiredMixin, View):
             decision_form.save()
 
         return HttpResponse("Done")
+
+
+class RankingView(View):
+    template_name = 'user/ranking.html'
+
+    def get(self, request, *args, **kwargs):
+        
+        groups = Group.objects.order_by('-score')
+        position = 1
+
+        ranking = list()
+        for group in groups:
+            ranking.append({'name': group.name, 'score': group.score, 'position': position})
+            position+=1
+
+        return render(request, self.template_name, {'ranking': ranking})
