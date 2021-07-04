@@ -218,7 +218,7 @@ class FeedbackView(LoginRequiredMixin, View):
                 day = str(match.created_at.day).zfill(2)
                 date = f"{day}/{month}/{match.created_at.year}"
 
-                feedbacks.append(f"Data: {date}\n\nFeedback: {match.individual_feedback}\n\nAcertos: {match.hits}\nErros: {match.mistakes}")
+                feedbacks.append(f"Data: {date}\n\nFeedback:\n{match.individual_feedback}\n\nAcertos: {match.hits}\nErros: {match.mistakes}")
 
             return render(request, self.template_name, {'feedbacks': feedbacks})
 
