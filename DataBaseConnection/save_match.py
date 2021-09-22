@@ -27,20 +27,29 @@ client = requests.session()
 
 csrftoken = set_csrftoken(client)
 
-data = dict(username="andre.aragao", password="Dufwine#1003", csrfmiddlewaretoken=csrftoken, next='/')
+data = dict(username=sys.argv[1], password=sys.argv[2], csrfmiddlewaretoken=csrftoken, next='/')
 r = client.post(login_url, data=data, headers=dict(Referer=login_url))
 
 # I need to reset csrftoken because login redirects to home, ant csrftoken is cleared
 csrftoken = set_csrftoken(client)
 
+path = os.getcwd()
+os.chdir('../Assets/Data/')
+path = os.getcwd()
+
+file = open("player_info.txt", "r")
+player_info = file.readlines()
+file.close()
+
 data = dict(
-    role="Scrum Master",
-    hits=6,
-    mistakes=4,
-    individual_feedback="Poucos erros.",
-    group="Firma",
+    role=player_info[0],
+    hits=int(player_info[1]),
+    mistakes=int(player_info[2]),
+    individual_feedback=player_info[3],
+    group=player_info[4],
     csrfmiddlewaretoken=csrftoken,
-    next='/')
+    next='/'
+)
 
 r = client.post(match_url, data=data, headers=dict(Referer=match_url))
 
@@ -48,27 +57,35 @@ print(f'{r.status_code}')
 
 match_id = r.json()['match_id']
 
+
+
+file = open("path.txt", "r")
+decisions_path = file.readline()
+file.close()
+
 decision_url += match_id + "/"
 
 
+
 ########### Save decision
+os.chdir(decisions_path)
+files = os.listdir()
 
-data = dict(
-    decision="Daily Scrum",
-    scenery="Reunião de Equipe",
-    is_mistake=False,
-    csrfmiddlewaretoken=csrftoken,
-    next='/'
-)
+for f in files:
+    file = open(f, 'r')
+    decision = file.readlines()
+    file.close()
 
-save(client, data, decision_url)
+    is_mistake = False
+    if decision[2] == 'True':
+        is_mistake = True,
+        
+    data = dict(
+        decision=decision[0].replace('\n'),
+        scenery=decision[1].replace('\n'),
+        is_mistake=is_mistake,
+        csrfmiddlewaretoken=csrftoken,
+        next='/'
+    )
 
-data = dict(
-    decision="Sprint Retrospective",
-    scenery="Reunião de Equipe",
-    is_mistake=True,
-    csrfmiddlewaretoken=csrftoken,
-    next='/'
-)
-
-save(client, data, decision_url)
+    save(client, data, decision_url)
