@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import TextInput, PasswordInput
-from .models import Decision, Match, Player
+from .models import Decision, Group, Match, Player
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
@@ -40,3 +40,9 @@ class DecisionRegisterForm(forms.ModelForm):
     class Meta:
         model = Decision
         fields = ['decision', 'scenery', 'is_mistake']
+
+
+class GroupRegisterForm(forms.ModelForm):
+    class Meta:
+        model = Group
+        fields = ['name', 'score']

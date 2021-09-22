@@ -21,6 +21,7 @@ def save(client, data, url):
 
 login_url = "http://127.0.0.1:8000/login/"
 match_url = "http://127.0.0.1:8000/match-register/"
+group_url = "http://127.0.0.1:8000/group-register/"
 decision_url = "http://127.0.0.1:8000/decision-register/"
 
 client = requests.session()
@@ -34,7 +35,7 @@ r = client.post(login_url, data=data, headers=dict(Referer=login_url))
 csrftoken = set_csrftoken(client)
 
 path = os.getcwd()
-os.chdir('../Assets/Data/')
+os.chdir('../Data/')
 path = os.getcwd()
 
 file = open("player_info.txt", "r")
@@ -42,15 +43,16 @@ player_info = file.readlines()
 file.close()
 
 data = dict(
-    role=player_info[0],
-    hits=int(player_info[1]),
-    mistakes=int(player_info[2]),
-    individual_feedback=player_info[3],
-    group=player_info[4],
+    role=player_info[0].replace('\n', ''),
+    hits=int(player_info[1].replace('\n', '')),
+    mistakes=int(player_info[2].replace('\n', '')),
+    individual_feedback=player_info[3].replace('\n', ''),
+    group=player_info[4].replace('\n', ''),
     csrfmiddlewaretoken=csrftoken,
     next='/'
 )
 
+# Not working. It doesn't send HttpResponse
 r = client.post(match_url, data=data, headers=dict(Referer=match_url))
 
 print(f'{r.status_code}')
@@ -81,8 +83,8 @@ for f in files:
         is_mistake = True,
         
     data = dict(
-        decision=decision[0].replace('\n'),
-        scenery=decision[1].replace('\n'),
+        decision=decision[0].replace('\n', ''),
+        scenery=decision[1].replace('\n', ''),
         is_mistake=is_mistake,
         csrfmiddlewaretoken=csrftoken,
         next='/'

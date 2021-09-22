@@ -13,6 +13,7 @@ urlpatterns = [
     path('search/', SearchView.as_view(), name="search"),
     path('match-register/', MatchRegisterView.as_view(), name="match_register"),
     path('decision-register/<str:match_id>/', DecisionRegisterView.as_view(), name="decision-regsiter"),
+    path('group-register/', GroupRegisterView.as_view(), name="group_register"),
     path('ranking/', RankingView.as_view(), name="ranking"),
     path('teste/', MatchRegisterView.as_view(), name="match-register"), # Test-only url
 ]

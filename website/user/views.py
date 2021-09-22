@@ -284,6 +284,18 @@ class DecisionRegisterView(LoginRequiredMixin, View):
         return HttpResponse("Done")
 
 
+class GroupRegisterView(View):
+    form_class = GroupRegisterForm
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+        return HttpResponse("Done")
+
+
 class RankingView(View):
     template_name = 'user/ranking.html'
 
