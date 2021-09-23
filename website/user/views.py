@@ -6,6 +6,8 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.functions import Coalesce
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from .forms import *
 from .models import *
 
@@ -61,6 +63,7 @@ class LoginView(View):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request=request, data=request.POST)
+
         if form.is_valid():
             user = authenticate(username=form.cleaned_data.get('username'), password=form.cleaned_data.get('password'))
             login(request, user)
@@ -284,9 +287,11 @@ class DecisionRegisterView(LoginRequiredMixin, View):
         return HttpResponse("Done")
 
 
+@method_decorator(csrf_exempt, name="dispatch") # This is for disable csrf token
 class GroupRegisterView(View):
     form_class = GroupRegisterForm
 
+    
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
 
