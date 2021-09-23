@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+
 
 namespace Examples.System.Net {
     public class WebRequestPostExample {
@@ -25,12 +27,21 @@ namespace Examples.System.Net {
             data2.Add("individual_feedback", "Muito bom!");
             data2.Add("group", "Tigers");
             NewPost("http://127.0.0.1:8000/match-register/", data2, client);
+
+            Console.Read();
         }
 
         // NewPost is the way recommended by Micrsoft
         public static void NewPost(string url, Dictionary<string, string> data, HttpClient client) {
             var req = new HttpRequestMessage(HttpMethod.Post, url) { Content = new FormUrlEncodedContent(data) };
-            client.SendAsync(req).Wait();
+            var response = client.SendAsync(req).Result;
+            var content = response.Content.ReadAsStringAsync().Result;
+            try {
+                JObject json = JObject.Parse(content);
+                Console.WriteLine(json["match_id"]);
+            }catch(Exception e) {
+                
+            }
         }
 
         public static void Post(string url, string postData) {
