@@ -5,6 +5,7 @@ urlpatterns = [
     path('', HomeView.as_view(), name='home'),
     path('singup/', SingUpView.as_view(), name='singup'),
     path('login/', LoginView.as_view(), name='login'),
+    path('game-login/', GameLoginView.as_view(), name="game_login"),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('login/<str:token>/', LoginByTokenView.as_view(), name="login_by_token"),
     path('data/', GetDataView.as_view(), name='data'),

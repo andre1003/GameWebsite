@@ -78,6 +78,23 @@ class LoginView(View):
             return HttpResponse('500', status=500)
 
 
+@method_decorator(csrf_exempt, name="dispatch")
+class GameLoginView(View):
+    form_class = AuthenticationForm
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request=request, data = request.POST)
+
+        if form.is_valid():
+            user = authenticate(username=form.cleaned_data.get('username'), password=form.cleaned_data.get('password'))
+            login(request, user)
+
+            return HttpResponse('200', status=200)
+        
+        else:
+            return HttpResponse('500', status=500)
+
+
 class LogoutView(View):
     def get(self, request, *args, **kwargs):
         logout(request)
@@ -233,6 +250,7 @@ class FeedbackView(LoginRequiredMixin, View):
         return redirect('search')
         
 
+@method_decorator(csrf_exempt, name="dispatch") # This is for disable csrf token
 class MatchRegisterView(LoginRequiredMixin, View):
     form_class = MatchRegisterForm
     template_name = 'user/tests.html'
@@ -272,7 +290,8 @@ class MatchRegisterView(LoginRequiredMixin, View):
             return JsonResponse(data)
 
 
-class DecisionRegisterView(LoginRequiredMixin, View):
+@method_decorator(csrf_exempt, name="dispatch") # This is for disable csrf token
+class DecisionRegisterView(View):
     form_class = DecisionRegisterForm
 
     def post(self, request, match_id, *args, **kwargs):
