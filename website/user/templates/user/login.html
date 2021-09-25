@@ -1,4 +1,57 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-center">
+        <h1>Autenticação</h1>
+    </div>
+    
+    {% if user.is_authenticated %}
+        <p>Você já está logado!</p>
+        <a href="{% url 'logout' %}">Sair</a>
+
+    {% else %}
+        <div class="content-section">
+            <form method="post" enctype="multipart/form-data">
+                <fieldset class="form-group">
+                    {% csrf_token %}
+
+                    <div class="container">
+                        <div class="row-cols-3 d-flex justify-content-center" style="margin-top: 15px;">
+                            <div class="col">
+                                {{ form.non_field_errors }}
+                                <div class="form-group">
+                                    <label for="{{ form.username.id_for_label }}">Nome de usuário:</label>
+                                    {{ form.username }}
+                                    {{ form.username.errors }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row-cols-3 d-flex justify-content-center" style="margin-top: 15px;">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="{{ form.password.id_for_label }}">Senha:</label>
+                                    {{ form.password }}
+                                    {{ form.password.errors }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 col-3 mx-auto" style="margin-top: 15px;">
+                            <input type="submit" class="btn btn-outline-success" value="Logar">
+                        </div>
+                    </div>
+                </fieldset>
+                
+            </form>
+        </div>
+    {% endif %}
+{% endblock %}
+
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -33,4 +86,4 @@
     </form>
     {% endif %}
 </body>
-</html>
+</html> -->

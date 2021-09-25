@@ -28,6 +28,35 @@ class PlayerRegisterForm(forms.ModelForm):
         # }
 
 
+class LoginForm(forms.ModelForm):
+    '''
+    :Type:
+        Login form
+    :Attributes:
+        username, password
+    :Description:
+        Form for authenticate an user
+    '''
+    
+    class Meta:
+        model = User
+        fields = ['username', 'password']
+        widgets = {
+            'username': TextInput(
+                attrs={
+                    'class': 'login-form-control',
+                    'placeholder': 'Insira o nome de usuário',
+                }
+            ),
+            'password': PasswordInput(
+                attrs={
+                    'class': 'login-form-control',
+                    'placeholder': 'Insira sua senha',
+                }
+            ),
+        }
+
+
 class MatchRegisterForm(forms.ModelForm):
     group = forms.CharField(max_length=254, help_text='Required')
     

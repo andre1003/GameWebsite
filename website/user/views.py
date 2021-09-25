@@ -52,7 +52,7 @@ class SingUpView(View):
 
 class LoginView(View):
     template_name = 'user/login.html'
-    form_class = AuthenticationForm
+    form_class = LoginForm
 
     def get(self, request, *args, **kwargs):
         form = {
@@ -62,10 +62,11 @@ class LoginView(View):
         return render(request, self.template_name, form)
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request=request, data=request.POST)
-
-        if form.is_valid():
-            user = authenticate(username=form.cleaned_data.get('username'), password=form.cleaned_data.get('password'))
+        form = self.form_class(request.POST)
+        user = authenticate(username=form['username'].value(), password=form['password'].value())
+        
+        if user is not None:
+            messages.success(request, f'Usuário autenticado com sucesso!')
             login(request, user)
 
             if 'next' in request.POST:
@@ -73,9 +74,9 @@ class LoginView(View):
 
             else:
                 return redirect('home')
-
         else:
-            return HttpResponse('500', status=500)
+            messages.error(request, f'Erro ao autenticar usuário, tente novamente!')
+            return redirect('login')
 
 
 @method_decorator(csrf_exempt, name="dispatch")

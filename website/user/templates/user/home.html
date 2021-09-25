@@ -1,4 +1,41 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Scrum XPerience{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-center">
+        <h1>Página Principal</h1>
+    </div>
+    
+
+    <p>Essa é a página principal do site referente ao jogo educativo para ensino de metodologias ágeis.</p>
+    <p>O protótipo desse jogo está sendo desenvolvido para apoiar o ensino das metodologias ágeis Scrum
+    e eXtreme Programming, as quais são as mais utilizadas atualmente. Para isso, está sendo utilizado o 
+    software Unity, em conjunto com a linguagem de programação C# para a produção do jogo. Este jogo busca 
+    corrigir carências encontradas em soluções anteriores, sendo o único, dentre todos os jogos digitais 
+    encontrados pelos autores, do estilo multijogador.</p>
+    
+    <h3>Como Jogar?</h3>
+    
+    <p>Para que você possa jogar o jogo educativo para ensino de metodologias ágeis, é necessário realizar duas etapas:</p>
+    
+    <p><b>1) Criar uma conta</b>. Caso você ainda não tenha uma conta, basta acessar a <a href="{% url 'singup' %}">página de cadastramento</a>.</p>
+    
+    <p><b>2) Baixar o Jogo</b>. Para fazer o download do jogo, <a href="#">clique aqui</a>.</p>
+
+    <p>Caso já possua uma conta e deseja alterar seus dados pessoais, <a href="{% url 'edit_data' %}">acesse aqui</a>.</p>
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Sair</a>
+    {% endif %}
+
+    {% if user.is_staff %}
+        <p>Procure por um feedback individual <a href="{% url 'search' %}">aqui</a>.</p>
+    {% endif %}
+{% endblock %}
+
+<!-- <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -6,6 +43,8 @@
     </head>
 
     <body>
+
+
         <h1>Página Principal</h1>
 
         {% if messages %}
@@ -39,4 +78,4 @@
             <p>Procure por um feedback individual <a href="{% url 'search' %}">aqui</a>.</p>
         {% endif %}
     </body>
-</html>
+</html> -->
