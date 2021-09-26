@@ -1,4 +1,47 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Buscar Aluno{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="d-flex justify-content-center">
+            <h1>Buscar Aluno</h1>
+        </div>
+
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-6">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <label>Qual aluno deseja procurar: </label><input type="text" class="form-control" name="search">
+                    <input type="submit" class="btn btn-fr btn-outline-dark" style="margin-top: 5px;" value="Buscar">
+                </form>
+            </div>
+            <div class="col"></div>
+        </div>
+
+        <div class="space"></div>
+
+        {% if users %}
+            <div class="d-flex justify-content-center">
+                <h5>Resultados encontrados:</h5>
+            </div>
+            <div class="row">
+                <div class="col"></div>
+                <div class="col-6">
+                    {% for user in users %}
+                        <p>{{ user.first_name }} - <a href="{% url 'feedback' user.username %}">Acessar Feedback</a></p>
+                    {% endfor %}
+                </div>
+                <div class="col"></div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -16,14 +59,6 @@
     </script>
 </head>
 <body>
-    <!--{% for match in matchs %}
-        <p class="hits" hidden>{{ match.hits }}</p>
-    {% endfor %}
-    <p id="total-hits"></p>
-    {% for match in matchs %}
-        <p class="mistakes" hidden>{{ match.mistakes }}</p>
-    {% endfor %}
-    <p id="total-mistakes"></p>-->
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <label>Qual aluno deseja procurar: </label><input type="text" name="search">
@@ -46,5 +81,5 @@
     document.getElementById('total-mistakes').innerHTML = "Total de Erros: " + add('mistakes');
 
 </script>
-</html>
+</html> -->
 

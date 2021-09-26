@@ -80,3 +80,11 @@ class GroupRegisterForm(forms.ModelForm):
     class Meta:
         model = Group
         fields = ['name', 'score']
+
+class FeedbackForm(forms.Form):
+    def __init__(self, date, individual_feedback, hits, mistakes, *args, **kwargs):
+        self.date = date
+        self.individual_feedback = individual_feedback
+        self.hits = hits
+        self.mistakes = mistakes
+        super(FeedbackForm, self).__init__(*args, **kwargs)

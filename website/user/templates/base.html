@@ -58,6 +58,13 @@
                                     <li class="nav-item">
                                         <a class="nav-link activated" href="{% url 'edit_data' %}">Editar Dados</a>
                                     </li>
+
+                                    {% if user.is_staff %}
+                                        <li class="nav-item">
+                                            <a class="nav-link activated" href="{% url 'search' %}">Buscar Aluno</a>
+                                        </li>
+                                    {% endif %}
+
                                 {% endif %}
                             </ul>
 

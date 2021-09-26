@@ -228,6 +228,7 @@ class SearchView(LoginRequiredMixin, View):
 
 class FeedbackView(LoginRequiredMixin, View):
     template_name = 'user/feedback.html'
+    form_class = FeedbackForm
 
     def get(self, request, username, *args, **kwargs):
         if request.user.is_staff:
@@ -242,7 +243,9 @@ class FeedbackView(LoginRequiredMixin, View):
                 day = str(match.created_at.day).zfill(2)
                 date = f"{day}/{month}/{match.created_at.year}"
 
-                feedbacks.append(f"Data: {date}\n\nFeedback:\n{match.individual_feedback}\n\nAcertos: {match.hits}\nErros: {match.mistakes}")
+                form = self.form_class(date, match.individual_feedback, match.hits, match.mistakes)
+
+                feedbacks.append(form)
 
             return render(request, self.template_name, {'feedbacks': feedbacks})
 
