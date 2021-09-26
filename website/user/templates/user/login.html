@@ -18,6 +18,10 @@
                 <fieldset class="form-group">
                     {% csrf_token %}
 
+                    {% if request.GET.next %}
+                        <input type="hidden" name="next" value="{{ request.GET.next }}">
+                    {% endif %}
+
                     <div class="container">
                         <div class="row-cols-3 d-flex justify-content-center" style="margin-top: 15px;">
                             <div class="col">

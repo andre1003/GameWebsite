@@ -1,4 +1,98 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cadastro{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-center">
+        <h1>Cadastro</h1>
+    </div>
+
+    <div class="content-section">
+        <form method="post" enctype="multipart/form-data">
+            <fieldset class="form-group">
+                {% csrf_token %}
+
+                <div class="container">
+                    <div class="row" style="margin-top: 15px;">
+                        {{ user_form.non_field_errors }}
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="{{ user_form.first_name.id_for_label }}">Nome:</label>
+                                {{ user_form.first_name }}
+                                {{ user_form.first_name.errors }}
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="{{ user_form.last_name.id_for_label }}">Sobrenome:</label>
+                                {{ user_form.last_name }}
+                                {{ user_form.last_name.errors }}
+                            </div>
+                        </div>
+
+                        <div class="col-2">
+                            <div class="form-group">
+                                <label for="{{ player_form.age.id_for_label }}">Idade:</label>
+                                {{ player_form.age }}
+                                {{ player_form.age.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="{{ user_form.email.id_for_label }}">E-mail:</label>
+                                {{ user_form.email }}
+                                {{ user_form.email.errors }}
+                            </div>
+                        </div>
+
+                        <div class="col-5">
+                            <div class="form-group">
+                                <label for="{{ user_form.username.id_for_label }}">Nome de usuário:</label>
+                                {{ user_form.username }}
+                                {{ user_form.username.errors }}
+                                <small class="text-muted">150 caracteres ou menos. Letras, números e @/./+/-/_ apenas.</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="{{ user_form.password1.id_for_label }}">Senha:</label>
+                                {{ user_form.password1 }}
+                                {{ user_form.password1.errors }}
+                                <small class="text-muted">
+                                    <ul>
+                                        <li>Sua senha não pode ser muito parecida com o resto das suas informações pessoais.</li>
+                                        <li>Sua senha precisa conter pelo menos 8 caracteres.</li>
+                                        <li>Sua senha não pode ser uma senha comumente utilizada.</li>
+                                        <li>Sua senha não pode ser inteiramente numérica.</li>
+                                    </ul>
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="{{ user_form.password2.id_for_label }}">Confirmar senha:</label>
+                                {{ user_form.password2 }}
+                                {{ user_form.password2.errors }}
+                            </div>
+                            <input type="submit" class="btn btn-outline-dark btn-fr" style="margin-top: 5px;" value="Cadastrar">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
+
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -10,8 +104,7 @@
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <!--{{ user_form.as_p }}
-        {{ player_form.age }}-->
+        
         <div>
             <label for="{{ user_form.username.id_for_label }}">Nome de usuário:</label>
             {{ user_form.username }}
@@ -57,4 +150,4 @@
         <input type="submit" value="Registrar">
     </form>
 </body>
-</html>
+</html> -->

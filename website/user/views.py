@@ -42,6 +42,9 @@ class SingUpView(View):
             player_form.instance.user = User.objects.get(username=user_form['username'].value())
             player_form.save()
 
+            user = authenticate(username=user_form['username'].value(), password=user_form['password1'].value())
+            login(request, user)
+
             messages.success(request, 'Conta criada com sucesso!')
             return redirect('home')
 
