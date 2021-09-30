@@ -12,3 +12,4 @@ website/user/migrations/
 **/.vscode/
 **/*.txt
 **/*.spec
+website/.env
