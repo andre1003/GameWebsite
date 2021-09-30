@@ -2,7 +2,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, HttpResponse
 from django.views import View
-from django.http import JsonResponse
+from django.views.generic import TemplateView
+from django.http import JsonResponse, response
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.functions import Coalesce
@@ -341,3 +342,22 @@ class RankingView(View):
             position+=1
 
         return render(request, self.template_name, {'ranking': ranking})
+
+
+
+
+
+class Handler404(TemplateView):
+    template_name = 'errors/404.html'
+
+    @classmethod
+    def get_rendered_view(cls):
+        as_view_fn = cls.as_view()
+
+        def view_fn(request):
+            response = as_view_fn(request)
+            response.render()
+            response.status_code = 404
+            return response
+
+        return view_fn

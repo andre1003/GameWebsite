@@ -60,21 +60,19 @@ div.form-group>#id_username:focus, div.form-group #id_password:focus, #search:fo
 }
 
 .hide {
-    max-height: 0;
+    /* max-height: 0;
     transition: max-height 0.5s ease-out;
-    overflow: hidden;
-    /* visibility: hidden;
+    overflow: hidden; */
+    visibility: hidden;
     opacity: 0;
-    height: 0px;
-    transition: visibility 0.2s, opacity 0.2s linear; */
+    transition: visibility 0.2s, opacity 0.2s linear;
 }
 
 .description:hover + .hide {
-    max-height: 100%;
-    transition: max-height 0.15s ease-in;
-    /* visibility: visible;
+    /* max-height: 100%;
+    transition: max-height 0.15s ease-in; */
+    visibility: visible;
     opacity: 1;
-    height: 100%;; */
 }
 
 .card {

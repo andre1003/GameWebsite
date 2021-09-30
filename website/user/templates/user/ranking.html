@@ -4,11 +4,16 @@
 {% block title %}Ranking{% endblock %}
 
 {% block body %}
+    <div class="d-flex justify-content-center">
+        <h1>Ranking</h1>
+    </div>
+
+    <div class="space"></div>
+
     <div class="container">
-        
             {% for group in ranking %}
                 {% if group.position == 2 %}
-                    <div class="row" style="margin: 25px;">
+                    <div class="row" style="margin-top: 25px;">
                         <div class="col text-center">
                             <h3 class="description" style="color: silver;"><b>{{ group.position }}º - {{ group.name }}</b></h3>
                             <h5 class="hide" style="color: silver;">Pontos: {{ group.score }}</h5>

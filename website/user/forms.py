@@ -18,19 +18,25 @@ class UserRegisterForm(UserCreationForm):
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
 
+    def __init__(self, *args, **kwargs):
+        '''
+        :Params:
+            self, *args, **kwargs
+        :Return:
+            Initiate the attributes correctly
+        :Description:
+            Remove autofocus on username
+        '''
+        super(UserRegisterForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.pop("autofocus", None)
+
 
 class PlayerRegisterForm(forms.ModelForm):
     age = IntegerField(help_text='Required', widget=widgets.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Insira sua idade'}))
+    
     class Meta:
         model = Player
         fields = ['age']
-        # widgets = {
-        #     'age': TextInput(
-        #         attrs={
-        #             'placeholder': 'Insira sua idade'
-        #         }
-        #     )
-        # }
 
 
 class LoginForm(forms.ModelForm):

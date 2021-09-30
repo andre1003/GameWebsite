@@ -27,7 +27,7 @@ SECRET_KEY = 'werwym2x%)i@o_lon#u@h6_y5rb-#hpxs04-hx^*gmqo^g96bn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -143,3 +143,4 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger'
 }
+
