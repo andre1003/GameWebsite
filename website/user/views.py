@@ -2,9 +2,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect, HttpResponse
 from django.views import View
-from django.http import JsonResponse
+from django.views.generic import TemplateView
+from django.http import JsonResponse, response
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models.functions import Coalesce
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 from .forms import *
 from .models import *
 
@@ -39,6 +43,9 @@ class SingUpView(View):
             player_form.instance.user = User.objects.get(username=user_form['username'].value())
             player_form.save()
 
+            user = authenticate(username=user_form['username'].value(), password=user_form['password1'].value())
+            login(request, user)
+
             messages.success(request, 'Conta criada com sucesso!')
             return redirect('home')
 
@@ -49,7 +56,7 @@ class SingUpView(View):
 
 class LoginView(View):
     template_name = 'user/login.html'
-    form_class = AuthenticationForm
+    form_class = LoginForm
 
     def get(self, request, *args, **kwargs):
         form = {
@@ -59,9 +66,11 @@ class LoginView(View):
         return render(request, self.template_name, form)
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request=request, data=request.POST)
-        if form.is_valid():
-            user = authenticate(username=form.cleaned_data.get('username'), password=form.cleaned_data.get('password'))
+        form = self.form_class(request.POST)
+        user = authenticate(username=form['username'].value(), password=form['password'].value())
+        
+        if user is not None:
+            messages.success(request, f'Usuário autenticado com sucesso!')
             login(request, user)
 
             if 'next' in request.POST:
@@ -69,7 +78,24 @@ class LoginView(View):
 
             else:
                 return redirect('home')
+        else:
+            messages.error(request, f'Erro ao autenticar usuário, tente novamente!')
+            return redirect('login')
 
+
+@method_decorator(csrf_exempt, name="dispatch")
+class GameLoginView(View):
+    form_class = AuthenticationForm
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request=request, data = request.POST)
+
+        if form.is_valid():
+            user = authenticate(username=form.cleaned_data.get('username'), password=form.cleaned_data.get('password'))
+            login(request, user)
+
+            return HttpResponse('200', status=200)
+        
         else:
             return HttpResponse('500', status=500)
 
@@ -203,6 +229,7 @@ class SearchView(LoginRequiredMixin, View):
 
 class FeedbackView(LoginRequiredMixin, View):
     template_name = 'user/feedback.html'
+    form_class = FeedbackForm
 
     def get(self, request, username, *args, **kwargs):
         if request.user.is_staff:
@@ -217,7 +244,9 @@ class FeedbackView(LoginRequiredMixin, View):
                 day = str(match.created_at.day).zfill(2)
                 date = f"{day}/{month}/{match.created_at.year}"
 
-                feedbacks.append(f"Data: {date}\n\nFeedback: {match.individual_feedback}\n\nAcertos: {match.hits}\nErros: {match.mistakes}")
+                form = self.form_class(date, match.individual_feedback, match.hits, match.mistakes)
+
+                feedbacks.append(form)
 
             return render(request, self.template_name, {'feedbacks': feedbacks})
 
@@ -229,8 +258,13 @@ class FeedbackView(LoginRequiredMixin, View):
         return redirect('search')
         
 
+@method_decorator(csrf_exempt, name="dispatch") # This is for disable csrf token
 class MatchRegisterView(LoginRequiredMixin, View):
     form_class = MatchRegisterForm
+    template_name = 'user/tests.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, {'form': self.form_class})
 
     def post(self, request, *args, **kwargs):
         user = request.user
@@ -239,10 +273,19 @@ class MatchRegisterView(LoginRequiredMixin, View):
 
         if match_form.is_valid():
             match_form.instance.player = user.player
+
+            group = Group.objects.get(name=match_form['group'].value())
+            match_form.instance.group = group
+            
+            print(f'\n\n{group.name} - Score: {group.score}')
+
             match = match_form.save()
             
+            group.score += match.hits
+            group.save()
+
             """
-            The following code just get the matche saved and returns the match_id in
+            The following code just get the match saved and returns the match_id in
             a JSON response. This is important for saving multiple decisions,
             following the order:
 
@@ -255,7 +298,8 @@ class MatchRegisterView(LoginRequiredMixin, View):
             return JsonResponse(data)
 
 
-class DecisionRegisterView(LoginRequiredMixin, View):
+@method_decorator(csrf_exempt, name="dispatch") # This is for disable csrf token
+class DecisionRegisterView(View):
     form_class = DecisionRegisterForm
 
     def post(self, request, match_id, *args, **kwargs):
@@ -268,3 +312,52 @@ class DecisionRegisterView(LoginRequiredMixin, View):
             decision_form.save()
 
         return HttpResponse("Done")
+
+
+@method_decorator(csrf_exempt, name="dispatch") # This is for disable csrf token
+class GroupRegisterView(View):
+    form_class = GroupRegisterForm
+
+    
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+        return HttpResponse("Done")
+
+
+class RankingView(View):
+    template_name = 'user/ranking.html'
+
+    def get(self, request, *args, **kwargs):
+        
+        groups = Group.objects.order_by('-score')
+        position = 1
+
+        ranking = list()
+        for group in groups:
+            ranking.append({'name': group.name, 'score': group.score, 'position': position})
+            position+=1
+
+        return render(request, self.template_name, {'ranking': ranking})
+
+
+
+
+
+class Handler404(TemplateView):
+    template_name = 'errors/404.html'
+
+    @classmethod
+    def get_rendered_view(cls):
+        as_view_fn = cls.as_view()
+
+        def view_fn(request):
+            response = as_view_fn(request)
+            response.render()
+            response.status_code = 404
+            return response
+
+        return view_fn

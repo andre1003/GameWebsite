@@ -18,7 +18,7 @@ class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='player')
     age = models.CharField(max_length=3)
     auth_token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
+    #group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.user.first_name
@@ -33,6 +33,7 @@ class Match(models.Model):
     mistakes = models.PositiveIntegerField()
     individual_feedback = models.TextField()
     player = models.ForeignKey(Player, on_delete=models.PROTECT)
+    group = models.ForeignKey(Group, on_delete=models.PROTECT)
 
     def __str__(self):
         return str(self.match_id)
@@ -47,10 +48,3 @@ class Decision(models.Model):
 
     def __str__(self):
         return self.decision
-
-
-class MyOwnTestModel(models.Model):
-    name = models.CharField(max_length=150, null=True)
-
-    def __str__(self):
-        return self.name

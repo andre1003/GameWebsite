@@ -1,4 +1,124 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Alterar Dados{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function() {
+            $("#password1").removeAttr('required');
+            $("#password2").removeAttr('required');
+        });
+
+        function checkboxController(){
+            var controller = document.getElementById('controller');
+            var changePassword = document.getElementById('change-password');
+            var password1 = document.getElementById('password1');
+            var password2 = document.getElementById('password2');
+
+            if(controller.checked){
+                changePassword.hidden = false;
+                password1.hidden = false;
+                password2.hidden = false;
+            }
+            else {
+                changePassword.hidden = true;
+                password1.hidden = true;
+                password2.hidden = true;
+            }
+        }
+
+        
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-center">
+        <h1>Alterar Dados de Cadastro</h1>
+    </div>
+
+    <div class="content-section">
+        <form method="post" enctype="multipart/form-data">
+            <fieldset class="form-group">
+                {% csrf_token %}
+
+                <div class="container">
+                    <div class="row" style="margin-top: 15px;">
+                        {{ user_form.non_field_errors }}
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="{{ user_form.first_name.id_for_label }}">Nome:</label>
+                                {{ user_form.first_name }}
+                                {{ user_form.first_name.errors }}
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="{{ user_form.last_name.id_for_label }}">Sobrenome:</label>
+                                {{ user_form.last_name }}
+                                {{ user_form.last_name.errors }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top: 15px;">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="{{ user_form.email.id_for_label }}">E-mail:</label>
+                                {{ user_form.email }}
+                                {{ user_form.email.errors }}
+                            </div>
+                        </div>
+
+                        <div class="col-5">
+                            <div class="form-group">
+                                <label for="{{ user_form.username.id_for_label }}">Nome de usuário:</label>
+                                {{ user_form.username }}
+                                <small class="text-muted">150 caracteres ou menos. Letras, números e @/./+/-/_ apenas.</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" name="password" id="controller" onchange="checkboxController();"> <label for="password">Alterar senha</label>
+                    </div>
+
+                    <div hidden class="row" id="change-password">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="{{ user_form.password1.id_for_label }}">Senha:</label>
+                                {{ user_form.password1 }}
+                                {{ user_form.password1.errors }}
+                                <small class="text-muted">
+                                    <ul>
+                                        <li>Sua senha não pode ser muito parecida com o resto das suas informações pessoais.</li>
+                                        <li>Sua senha precisa conter pelo menos 8 caracteres.</li>
+                                        <li>Sua senha não pode ser uma senha comumente utilizada.</li>
+                                        <li>Sua senha não pode ser inteiramente numérica.</li>
+                                    </ul>
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="{{ user_form.password2.id_for_label }}">Confirmar senha:</label>
+                                {{ user_form.password2 }}
+                                {{ user_form.password2.errors }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </fieldset>
+            <input type="submit" class="btn btn-outline-dark btn-fr" style="margin-top: 5px;" value="Salvar">
+        </form>
+    </div>
+{% endblock %}
+
+
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -10,10 +130,6 @@
     <h1>Dados do Usuário</h1>
 
     <form method="POST" enctype="multipart/form-data">
-        <!--{% csrf_token %}
-
-        {{ user_form.as_p }}
-        {{ player_form.age }}-->
         {% csrf_token %}
         <div>
             <label for="{{ user_form.username.id_for_label }}">Nome de usuário:</label>
@@ -64,4 +180,4 @@
         }
     }
 </script>
-</html>
+</html> -->

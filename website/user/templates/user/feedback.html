@@ -1,4 +1,40 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Feedback Individual{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% for feedback in feedbacks %}
+            <div class="row">
+                <div class="col"></div>
+                <div class="col-6 card">
+                    <h6>Data: {{ feedback.date }}</h6>
+                    <p>Acertos: {{ feedback.hits }}</p>
+                    <p>Erros: {{ feedback.mistakes }}</p>
+                    <p>Feedback: {{ feedback.individual_feedback }}</p>
+                </div>
+                <div class="col"></div>
+            </div>
+
+            <div class="space"></div>
+        {% endfor %}
+
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-6" style="padding: 5px;">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-fr btn-outline-dark" value="Voltar">
+                </form>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+{% endblock %}
+
+
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -16,4 +52,4 @@
     </form>
 </body>
 </html>
-
+ -->

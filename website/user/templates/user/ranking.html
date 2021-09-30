@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ranking{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-center">
+        <h1>Ranking</h1>
+    </div>
+
+    <div class="space"></div>
+
+    <div class="container">
+            {% for group in ranking %}
+                {% if group.position == 2 %}
+                    <div class="row" style="margin-top: 25px;">
+                        <div class="col text-center">
+                            <h3 class="description" style="color: silver;"><b>{{ group.position }}º - {{ group.name }}</b></h3>
+                            <h5 class="hide" style="color: silver;">Pontos: {{ group.score }}</h5>
+                        </div>
+                        <div class="col"></div>
+                        <div class="col"></div>
+                    </div>
+
+                {% elif group.position == 1 %}
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col text-center">
+                            <h3 class="description" style="color: gold;"><b>{{ group.position }}º - {{ group.name }}</b></h3>
+                            <h5 class="hide" style="color: gold;">Pontos: {{ group.score }}</h5>
+                        </div>
+                        <div class="col"></div>
+                    </div>
+                {% elif group.position == 3 %}
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col"></div>
+                        <div class="col text-center">
+                            <h3 class="description" style="color: #CD7F32;"><b>{{ group.position }}º - {{ group.name }}</b></h3>
+                            <h5 class="hide" style="color: #CD7F32;">Pontos: {{ group.score }}</h5>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                    <div class="space"></div>
+                    <div class="row">
+                        <div class="col"></div>
+                        <div class="col-10 text-center">
+                            <h4 class="description"><b>{{ group.position }}º - {{ group.name }}</b></h4>
+                            <h6 class="hide">Pontos: {{ group.score }}</h6>
+                        </div>
+                        <div class="col"></div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+    </div>
+{% endblock %}
+
+
+<!-- <div class="d-flex justify-content-center">
+        <h1>Ranking</h1>
+    </div>
+    <div id="wrapper d-flex justify-content-center">
+            <ol class="podium-rank">
+                {% for group in ranking %}
+                    {% if group.position == 1 %}
+                        <li>
+                            <a href="#">
+                                <div class="container">
+                                    <div class="image">
+                                        <h1 style="color: gold;"><b>{{ group.name }}</b></h1>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {% elif group.position == 2 %}
+                        <li>
+                            <a href="#">
+                                <div class="container">
+                                    <div class="image">
+                                        <h1 style="color: silver;"><b>{{ group.name }}</b></h1>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {% elif group.position == 3 %}
+                        <li>
+                            <a href="#">
+                                <div class="container">
+                                    <div class="image">
+                                        <h1 style="color: #CD7F32;"><b>{{ group.name }}</b></h1>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ol>
+    </div> -->
+<!-- <!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Ranking</title>
+    </head>
+
+    <body>
+        <h1>Ranking</h1>
+
+        {% for group in ranking %}
+            <p>{{ group.position }}º - {{ group.name }}: {{ group.score }} pontos</p>
+        {% endfor %}
+    </body>
+</html> -->

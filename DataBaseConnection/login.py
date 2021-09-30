@@ -25,11 +25,9 @@ path = os.getcwd()
 os.chdir('Assets/Data/')
 path = os.getcwd()
 
-file = open("score.txt", "w")  
+file = open("login.txt", "w")  
 if r.status_code == 200:
-    r = client.get(data_url)
-    string = '{\"hits\": ' + str(r.json()['hits']) + ', \"mistakes\": ' + str(r.json()['mistakes']) + '}'
-    r = client.get(logout_url)
+    string = 'Sucesso!'
 
 else:
     string = 'Credenciais incorretas'

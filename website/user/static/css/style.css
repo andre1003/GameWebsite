@@ -1,0 +1,85 @@
+div.space {
+    padding-top: 50px;
+}
+
+.navbar-correction {
+    border-radius: 10px;
+    margin-top: -25px;
+    padding-top: 35px;
+    padding-left: 15px;
+}
+
+.login-form-control {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(242, 242, 242, 1);
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  
+  .login-form-control:focus {
+      color: #495057;
+      background-color: #fff;
+      outline: 0;
+  }
+
+div.form-group>#id_username, div.form-group #id_password, #search {
+    background-color: rgba(242, 242, 242, 1);
+    transition: 0.5s;
+}
+
+div.form-group>#id_username:focus, div.form-group #id_password:focus, #search:focus {
+    background-color: rgba(179, 179, 179, 0.7);
+    color: black;
+}
+
+.form-control {
+    background-color: white !important;
+}
+
+.form-control:focus {
+    background-color: rgba(179, 179, 179, 0.7);
+    color: black;
+}
+
+.btn-fr {
+    float: right;
+}
+
+.text-center {
+    text-align: center;
+    align-items: center;
+}
+
+.hide {
+    /* max-height: 0;
+    transition: max-height 0.5s ease-out;
+    overflow: hidden; */
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.2s, opacity 0.2s linear;
+}
+
+.description:hover + .hide {
+    /* max-height: 100%;
+    transition: max-height 0.15s ease-in; */
+    visibility: visible;
+    opacity: 1;
+}
+
+.card {
+    transition: 0.5s;
+    padding: 5px;;
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px 0 #495057;
+}
