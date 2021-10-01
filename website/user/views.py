@@ -106,42 +106,6 @@ class LogoutView(View):
         return redirect('home')
 
 
-class LoginByTokenView(View):
-    def get(self, request, token, *args, **kwargs):
-        player = Player.objects.get(auth_token=token)
-        login(request, player.user)
-
-        data = {
-            'username': player.user.username,
-            'age': player.age,
-            'auth_token': player.auth_token
-        }
-
-        return JsonResponse(data)
-
-
-class GetDataView(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        user = request.user
-
-        matchs = Match.objects.filter(player=user.player)
-        hits = 0
-        mistakes = 0
-
-        for match in matchs:
-            hits += match.hits
-            mistakes += match.mistakes
-
-        data = {
-            'username': user.username,
-            'hits': hits,
-            'mistakes': mistakes,
-            'auth_token': user.player.auth_token
-        }
-
-        return JsonResponse(data)
-
-
 class EditDataView(LoginRequiredMixin, View): # PRECISA REALIZAR O POST E REVISAR
     template_name = 'user/data.html'
     form_class = UserRegisterForm
@@ -347,7 +311,7 @@ class RankingView(View):
 
 
 
-
+# Error handler
 class Handler404(TemplateView):
     template_name = 'errors/404.html'
 

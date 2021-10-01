@@ -17,7 +17,7 @@ class Group(models.Model):
 class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='player')
     age = models.CharField(max_length=3)
-    auth_token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    #auth_token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     #group = models.ForeignKey(Group, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
