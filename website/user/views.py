@@ -94,10 +94,17 @@ class GameLoginView(View):
             user = authenticate(username=form.cleaned_data.get('username'), password=form.cleaned_data.get('password'))
             login(request, user)
 
-            return HttpResponse('200', status=200)
+            data = {
+                'response': 'success'
+            }
+
+            return JsonResponse(data)
         
         else:
-            return HttpResponse('500', status=500)
+            data = {
+                'response': 'fail'
+            }
+            return JsonResponse(data)
 
 
 class LogoutView(View):
@@ -209,7 +216,7 @@ class FeedbackView(LoginRequiredMixin, View):
                 day = str(match.created_at.day).zfill(2)
                 date = f"{day}/{month}/{match.created_at.year}"
 
-                form = self.form_class(date, match.individual_feedback, match.hits, match.mistakes)
+                form = self.form_class(date, match.individual_feedback, match.hits, match.mistakes, match.match_id)
 
                 feedbacks.append(form)
 
@@ -221,7 +228,31 @@ class FeedbackView(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         return redirect('search')
-        
+
+
+class DecisionsView(LoginRequiredMixin, View):
+    template_name = 'user/decisions.html'
+    
+    def get(self, request, match_id, *args, **kwargs):
+        if request.user.is_staff:
+            try:
+                match = Match.objects.get(match_id=match_id)
+                decisions = Decision.objects.filter(match=match)
+
+                return render(request, self.template_name, {'decisions': decisions})
+
+            except:
+                messages.warning(request, 'Partida não encontrada!')
+                return redirect('search')
+
+        else:
+            messages.error(request, 'Você não tem permissão para acessar essa página!')
+            return redirect('home')
+
+    def post(self, request, match_id, *args, **kwargs):
+        match = Match.objects.get(match_id=match_id)
+        return redirect(f'feedback', match.player.user)
+
 
 @method_decorator(csrf_exempt, name="dispatch") # This is for disable csrf token
 class MatchRegisterView(LoginRequiredMixin, View):
@@ -257,7 +288,7 @@ class MatchRegisterView(LoginRequiredMixin, View):
             Save a match (it returns match_id) > Save n decisions, with the match_id
             """
             data = {
-                'match_id': match.match_id
+                'response': match.match_id
             }
 
             return JsonResponse(data)

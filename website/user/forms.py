@@ -88,9 +88,10 @@ class GroupRegisterForm(forms.ModelForm):
         fields = ['name', 'score']
 
 class FeedbackForm(forms.Form):
-    def __init__(self, date, individual_feedback, hits, mistakes, *args, **kwargs):
+    def __init__(self, date, individual_feedback, hits, mistakes, match_id, *args, **kwargs):
         self.date = date
         self.individual_feedback = individual_feedback
         self.hits = hits
         self.mistakes = mistakes
+        self.match_id = match_id
         super(FeedbackForm, self).__init__(*args, **kwargs)

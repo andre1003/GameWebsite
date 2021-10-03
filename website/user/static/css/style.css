@@ -76,7 +76,7 @@ div.form-group>#id_username:focus, div.form-group #id_password:focus, #search:fo
 }
 
 .card {
-    transition: 0.5s;
+    transition: 0.25s;
     padding: 5px;;
 }
 

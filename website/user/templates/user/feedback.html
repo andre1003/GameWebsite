@@ -8,11 +8,12 @@
         {% for feedback in feedbacks %}
             <div class="row">
                 <div class="col"></div>
-                <div class="col-6 card">
+                <div class="col-8 card">
                     <h6>Data: {{ feedback.date }}</h6>
                     <p>Acertos: {{ feedback.hits }}</p>
                     <p>Erros: {{ feedback.mistakes }}</p>
                     <p>Feedback: {{ feedback.individual_feedback }}</p>
+                    <p>Acesse todas as decisões <a href="{% url 'decision_view' feedback.match_id %}">aqui</a>.</p>
                 </div>
                 <div class="col"></div>
             </div>
@@ -22,7 +23,7 @@
 
         <div class="row">
             <div class="col"></div>
-            <div class="col-6" style="padding: 5px;">
+            <div class="col-8" style="padding: 5px;">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <input type="submit" class="btn btn-fr btn-outline-dark" value="Voltar">
