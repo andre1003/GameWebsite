@@ -13,3 +13,4 @@ website/user/migrations/
 **/*.txt
 **/*.spec
 website/.env
+ambiente/

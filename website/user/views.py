@@ -19,6 +19,7 @@ class HomeView(View):
     template_name = 'user/home.html'
 
     def get(self, request, *args, **kwargs):
+        print(self.request.META)
         return render(request, self.template_name)
 
 
@@ -319,7 +320,7 @@ class GroupRegisterView(View):
         form = self.form_class(request.POST)
 
         if form.is_valid():
-            form.save()
+            obj, created = Group.objects.get_or_create(name=form['name'].value(), defaults={'score': 0})
 
         return HttpResponse("Done")
 

@@ -23,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'werwym2x%)i@o_lon#u@h6_y5rb-#hpxs04-hx^*gmqo^g96bn'
+SECRET_KEY = 'x9gdrnf7q2)4ob46%4h0&_4(lt@mz$2vuqy!u2!_=7j1nvxf&e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['10.48.186.1', '10.48.186.151', 'www.dcce.ibilce.unesp.br', 'dcce.ibilce.unesp.br']
 
 
 # Application definition
@@ -125,15 +125,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/sxp/static/'
+STATIC_ROOT = '/var/www/html/static'
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-)
+#STATICFILES_DIRS = (
+#    os.path.join(BASE_DIR, "static"),
+#)
 
-MEDIA_URL = '/media/'
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_URL = '/sxp/media/'
+MEDIA_ROOT = '/var/www/html/media'
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -149,3 +150,18 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger'
 }
 
+if not DEBUG:
+    # my alterations for production, see ./manage.py check --deploy
+    #SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_HSTS_SECONDS = 3600  # 1hora
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    #SECURE_CONTENT_TYPE_NOSNIFF = True
+    #SECURE_BROWSER_XSS_FILTER = True
+    #CSRF_COOKIE_HTTPONLY = True
+    #X_FRAME_OPTIONS = 'DENY'
+    # Setup support for proxy headers
+    USE_X_FORWARDED_HOST = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

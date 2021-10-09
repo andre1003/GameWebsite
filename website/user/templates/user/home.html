@@ -24,8 +24,6 @@
     
     <p><b>2) Baixar o Jogo</b>. Para fazer o download do jogo, <a href="#">clique aqui</a>.</p>
 
-    <p>Caso já possua uma conta e deseja alterar seus dados pessoais, <a href="{% url 'edit_data' %}">acesse aqui</a>.</p>
-
     {% if user.is_staff %}
         <p>Procure por um feedback individual <a href="{% url 'search' %}">aqui</a>.</p>
     {% endif %}
@@ -64,12 +62,9 @@
         
         <p><b>2) Baixar o Jogo</b>. Para fazer o download do jogo, <a href="#">clique aqui</a>.</p>
 
-        <p>Caso já possua uma conta e deseja alterar seus dados pessoais, <a href="{% url 'edit_data' %}">acesse aqui</a>.</p>
-
         {% if user.is_authenticated %}
-            <a href="{% url 'logout' %}">Sair</a>
-        {% endif %}
-
+	    <p>Caso já possua uma conta e deseja alterar seus dados pessoais, <a href="{% url 'edit_data' %}">
+	{% endif %}
         {% if user.is_staff %}
             <p>Procure por um feedback individual <a href="{% url 'search' %}">aqui</a>.</p>
         {% endif %}
