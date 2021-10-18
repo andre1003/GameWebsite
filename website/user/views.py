@@ -9,6 +9,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.functions import Coalesce
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.db.models import Q, Value
+from django.db.models.functions import Concat
 from .forms import *
 from .models import *
 
@@ -192,12 +194,26 @@ class SearchView(LoginRequiredMixin, View):
     
     def post(self, request, *args, **kwargs):
         name = request.POST['search']
-        users = User.objects.filter(first_name__icontains=name)
-
-        if not users:
+        all_users = User.objects.annotate(fullname=Concat('first_name', Value(' '), 'last_name')).filter(Q(fullname__icontains=name))
+        users = list()
+        
+        if not all_users:
             messages.error(request, f"Nenhum aluno encontrado!")
+            return render(request, self.template_name, {'users': users})
 
-        return render(request, self.template_name, {'users': users})
+        else:
+            for user in all_users:
+                try:
+                    match = Match.objects.filter(player=user.player)
+                    if match:
+                        users.append(user)
+                
+                except:
+                    pass
+            
+            if not users:
+                messages.error(request, f'O aluno que você procura não possui um feedback cadastrado!')
+            return render(request, self.template_name, {'users': users})
 
 
 class FeedbackView(LoginRequiredMixin, View):
@@ -216,8 +232,12 @@ class FeedbackView(LoginRequiredMixin, View):
                 month = str(match.created_at.month).zfill(2)
                 day = str(match.created_at.day).zfill(2)
                 date = f"{day}/{month}/{match.created_at.year}"
+                if match.role == 'Scrum Master' or match.role == 'Product Owner' or match.role == 'Time de Desenvolvimento':
+                    method = 'Scrum'
+                else:
+                    method = 'eXtreme Programming'
 
-                form = self.form_class(date, match.individual_feedback, match.hits, match.mistakes, match.match_id)
+                form = self.form_class(date, match.individual_feedback, match.hits, match.mistakes, match.match_id, match.role, method)
 
                 feedbacks.append(form)
 

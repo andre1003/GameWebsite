@@ -14,7 +14,7 @@
             <div class="col-6">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <label>Qual aluno deseja procurar: </label><input type="text" class="form-control" name="search">
+                    <label>Insira o nome do aluno que você deseja procurar: </label><input type="text" class="form-control" name="search">
                     <input type="submit" class="btn btn-fr btn-outline-dark" style="margin-top: 5px;" value="Buscar">
                 </form>
             </div>
@@ -31,7 +31,7 @@
                 <div class="col"></div>
                 <div class="col-6">
                     {% for user in users %}
-                        <p>{{ user.first_name }} - <a href="{% url 'feedback' user.username %}">Acessar Feedback</a></p>
+		    <p>{{ user.first_name }} {{ user.last_name }} - <a href="{% url 'feedback' user.username %}">Acessar Feedback</a></p>
                     {% endfor %}
                 </div>
                 <div class="col"></div>

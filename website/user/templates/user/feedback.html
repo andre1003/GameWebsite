@@ -10,16 +10,28 @@
                 <div class="col"></div>
                 <div class="col-8 card">
                     <h6>Data: {{ feedback.date }}</h6>
-                    <p>Acertos: {{ feedback.hits }}</p>
-                    <p>Erros: {{ feedback.mistakes }}</p>
-                    <p>Feedback: {{ feedback.individual_feedback }}</p>
-                    <p>Acesse todas as decisões <a href="{% url 'decision_view' feedback.match_id %}">aqui</a>.</p>
+		    <p>Metodologia: {{ feedback.method }}</p>
+		    <p>Papel: {{ feedback.role }}</p>
+		    <p>Acertos: {{ feedback.hits }}</p>
+		    <p>Erros: {{ feedback.mistakes }}</p>
+		    <p>Feedback: {{ feedback.individual_feedback }}</p>
+		    <!--<p>Acesse todas as decisões <a href="{% url 'decision_view' feedback.match_id %}">aqui</a>.</p>-->
                 </div>
                 <div class="col"></div>
             </div>
 
             <div class="space"></div>
         {% endfor %}
+
+	{% if not feedbacks %}
+		<div class="row">
+		    <div class="col"></div>
+		    <div class="col-8 d-flex justify-content-center">
+		        <h5>Nenhum feedback encontrado para este aluno!</h5>
+		    </div>
+		    <div class="col"></div>
+		</div>
+	{% endif %}
 
         <div class="row">
             <div class="col"></div>

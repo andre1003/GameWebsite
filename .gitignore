@@ -14,3 +14,4 @@ website/user/migrations/
 **/*.spec
 website/.env
 ambiente/
+website/user/static/src/

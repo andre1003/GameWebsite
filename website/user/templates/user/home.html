@@ -22,7 +22,7 @@
     
     <p><b>1) Criar uma conta</b>. Caso você ainda não tenha uma conta, basta acessar a <a href="{% url 'singup' %}">página de cadastramento</a>.</p>
     
-    <p><b>2) Baixar o Jogo</b>. Para fazer o download do jogo, <a href="#">clique aqui</a>.</p>
+    <p><b>2) Baixar o Jogo</b>. Para fazer o download do jogo, <a href="{% static 'src/Scrum-XPerience.zip' %}" download>clique aqui</a>.</p>
 
     {% if user.is_staff %}
         <p>Procure por um feedback individual <a href="{% url 'search' %}">aqui</a>.</p>
