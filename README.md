@@ -53,4 +53,4 @@ $ python manage.py createsuperuser
 
 E pronto! Agora basta realizar as configurações de URL no Scrum XPerience, conforme descrito no repositório do executável do jogo, para poder utilizá-lo.
 
-[⬆ Voltar ao topo](#scrum-xperience-website)<br>
+[⬆ Voltar ao topo](#website-do-scrum-xperience)<br>
